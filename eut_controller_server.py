@@ -115,14 +115,11 @@ if __name__ == '__main__':
     server_thread = threading.Thread(target=server.start)
     server_thread.start()
     
-    # Keep the main thread running to prevent the script from exiting
     try:
-        while True:
-            pass
+        input("Press [Enter] to close.")
     except KeyboardInterrupt:
         pass
     except Exception:
         pass
-    server.stop()
-
-    input("Press [Enter] to close.")
+    finally:
+        server.stop()
