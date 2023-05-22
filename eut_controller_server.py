@@ -77,7 +77,7 @@ class TCPServer:
             if "TESTINFO?" in data:
                 # send the response back for the TESTINFO? request
                 for key, value in responses.items():
-                    response = f"{key}={value}"
+                    response = f"TESTINFO {key}={value}"
                     print(f"Sending data: {response}")
                     conn.send((response + '\n').encode())
             # Read new data
@@ -116,7 +116,7 @@ if __name__ == '__main__':
     server_thread.start()
     
     try:
-        input("Press [Enter] to close.")
+        input("\nPress [Enter] to close.\n\n")
     except KeyboardInterrupt:
         pass
     except Exception:
