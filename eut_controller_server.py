@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
     An example python file that simulates an EUT controller device
-    This script can receive events from RadiMation and respond to the EUTINFO? request
+    This script can receive events from RadiMation and respond to the TESTINFO? request
 """
 __author__ = "Raditeq"
 __copyright__ = "Copyright (C) 2023 Raditeq"
@@ -12,7 +12,7 @@ import threading
 
 responses = {
     "Humidity": "70%",
-    "Temperature": "20c",
+    "Temperature": "21.3 degrees Celcius",
     "Pressure": "1013.25 hPa",
     "Operating Mode": "Data from eut controller server",
     "Company": "Raditeq",
@@ -39,21 +39,22 @@ class TCPServer:
         # Start listening for incoming connections
         self.server_socket.listen()
 
-        print(f"Server started on {self.host}:{self.port}...")
+        host, port = self.server_socket.getsockname()
+        print(f"Server started on {host}:{port}.")
 
         # Accept incoming connections
         self.is_running = True
 
-        while self.is_running and self.server_socket:
-            try:
+        try:
+            while self.is_running and self.server_socket:
                 conn, addr = self.server_socket.accept()
-                print(f"Connected by {addr}")
+                print(f"Connected from {addr[0]}:{addr[1]}.")
 
                 # Create a new thread to handle the client
                 client_thread = threading.Thread(target=self.handle_client_request, args=(conn,addr))
                 client_thread.start()
-            except:
-                pass
+        except:
+            pass
 
     def stop(self):
         """Stop the server socket"""
@@ -66,31 +67,21 @@ class TCPServer:
 
     def handle_client_request(self, conn, addr):
         """This method will handle the client request"""
-        data = ""
-        data_size = 1
-
-        while data_size > 0:
+        data = self.readline(conn)
+        while data:
+            # Data was received
+            # remove newline characters
+            data = data.strip("\r\n")
+            # process the data from here
+            print(f"Received data: {data}")
+            if "TESTINFO?" in data:
+                # send the response back for the TESTINFO? request
+                for key, value in responses.items():
+                    response = f"{key}={value}"
+                    print(f"Sending data: {response}")
+                    conn.send((response + '\n').encode())
+            # Read new data
             data = self.readline(conn)
-            data_size = len(data)
-          
-            # Check if data was received
-            if data_size > 0 and data:
-                if "TESTINFO?" in data:
-                    # remove newline characters
-                    data = data.strip("\n").strip("\r")
-                    
-                    # send the response back for the TESTINFO? request
-                    response = ""
-                    for key, value in responses.items():
-                        response = f"{key}={value}\r\n"
-                        if len(response) > 0:
-                            print(f"sending: {response}")
-                            conn.send(response.encode())
-                else:
-                    # process the data from here
-                    print("Received data:", data)
-
-            data = ""
 
     def readline(self, conn):
         """Read a single line from the socket connection"""
@@ -108,7 +99,6 @@ class TCPServer:
                     foundTerminator = True
                 else:
                     data += read_data.decode()
-
                     if read_data.decode() == '\n':
                         foundTerminator = True
             except socket.error:
@@ -126,13 +116,13 @@ if __name__ == '__main__':
     server_thread.start()
     
     # Keep the main thread running to prevent the script from exiting
-    while True:
-        try:
+    try:
+        while True:
             pass
-        except KeyboardInterrupt:
-            server.stop()
-            break
-        except Exception:
-            break
-            
-    input("press any key")
+    except KeyboardInterrupt:
+        pass
+    except Exception:
+        pass
+    server.stop()
+
+    input("Press [Enter] to close.")
