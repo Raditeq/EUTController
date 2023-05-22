@@ -20,14 +20,14 @@ on the [RadiWiki website](https://wiki.radimation.com/wiki/index.php/Main_Page).
 ## Receiving EUT information items
 At the start of the test the RadiMation EUT Status Controller driver will send all known EUT information items to the TCP/IP server.
 
-The format is: EUTINFO <key>=<value>
+The format is: EUTINFO \<key\>=\<value\>
 
 Which key-value pairs are transmitted is completely depending on the information items that are configured on the 'EUT information' tab in the EUT window of RadiMation.
 
 ## Receiving Test information items
 At the start of the test the RadiMation EUT Status Controller driver will send all known test information items to the TCP/IP server.
 
-The format is: TESTINFO <key>=<value>
+The format is: TESTINFO \<key\>=\<value\>
 
 Which key-value pairs are transmitted is completely depending on the information items that are configured on the 'General Info' window in the TSF window of RadiMation.
 
@@ -35,7 +35,7 @@ Which key-value pairs are transmitted is completely depending on the information
 The EUT Status Controller driver will also send a request "TESTINFO?" to the server, which is then able to respond with a 'key' and 'value' which will be update or
 create a new information item in the general test information of the performed test.
 
-The format to send information back is: TESTINFO <key>=<value>
+The format to send information back is: TESTINFO \<key\>=\<value\>
 
 Every key-value pair that is provided, will be updated or added on the 'General Info' window in the test data window of RadiMation. A few specific keys with specific names
 have some additional effect.
