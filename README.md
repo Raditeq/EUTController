@@ -2,7 +2,8 @@
 [RadiMation](https://www.raditeq.com/automated-emc-software/) is an EMC test automation software. RadiMation has the possibility to exchange test 
 and status information with an Equipment Under Test (EUT) using an EUT controller device driver. This EUT controller device driver can for example 
 be used to inform the EUT of the actually tested frequency and when the dwell time is started and stopped.
-
+As this is an advanced control feature, using an EUT Controller is only licensed and possible in RadiMation® Pro.
+ 
 One of the available EUT controller device drivers is the '[Raditeq EUT Status Controller](https://wiki.radimation.com/wiki/index.php/Raditeq_EUT_Status_Controller)'. That device driver
 can be configured to use any communication medium to communicate generic events to an EUT or a third party software (which can communicate it to the EUT through a proprietary protocol).
 
@@ -59,3 +60,8 @@ The example Python script can be used as a starting point to further automate th
 * Update the actual test parameters as On Screen Display (OSD) text on a monitor.
 * Retrieve the actual operating mode of the EUT, and update it in the test results
 * Retrieve and log the name of the test engineer that is executing the test
+
+# Source code example
+The source code of the Example Python EUT Controller TCP/IP server is available in the [Raditeq/EUTController repository on GitHub](https://github.com/Raditeq/EUTController).
+Any questions or feedback can be raised in that GitHub repository, or by sending an e-mail to: [radimation-support@raditeq.com](mailto://radimation-support@raditeq.com).
+
